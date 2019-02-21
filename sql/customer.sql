@@ -1,1 +1,0 @@
-INSERT INTO `customer`(`id`, `open_id`, `thumb`, `nick_name`, `first_get_info`, `create_time`, `update_time`) VALUES (1, 'ouHLW5R_sJVSz5FUMNmBsujXuGnM', 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJV47n0Xb2CyL4FNHlPI5K5qwgyDnfniaaictbpibLtwuPwuGlq4vorZNxCGZ4EzJ2pLQuAuG499LN5w/132', '伏羲轻抚琴', 1, '2019-02-18 15:57:27', '2019-02-20 09:05:26');
