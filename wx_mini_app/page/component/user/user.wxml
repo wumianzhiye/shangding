@@ -1,0 +1,40 @@
+<scroll-view class="main" lower-threshold='50' scroll-y="true" style='height:100%' bindscrolltolower="getMoreOrders">
+    <view class="header">
+        <image src="{{thumb}}" class="thumb"></image>
+        <text class="nickname">{{nickname}}</text>
+        <text class="about">关于我们</text>
+    </view>
+    <view class="address-box">
+        <view class="address-manage">
+            <navigator url="/page/component/address/address">地址管理</navigator>
+        </view>
+        <view wx:if="{{hasAddress}}" class="address-list">
+            <view>{{address.name}}</view>
+            <view>{{address.phone}}</view>
+            <view>{{address.detail}}</view>
+        </view>
+    </view>
+    <view class="orders-box">
+        <view class="orders">我的订单</view>
+        <view class="orders-list" wx:for="{{orders}}" wx:key="index" >
+          <navigator url="/page/component/orders/orders?orderId={{item.id}}&status={{item.status}}">
+              <view class="orders-number"><text class='text-color'>收货点：</text><text class="text-address" hidden="{{item.address == null}}">{{item.address}}</text></view>
+              <view class="orders-detail">
+                  <image src="{{item.goodMainUrl}}" mode='widthFix'></image>
+                  <view class="order-good-name"><text class='text-color'>商品：</text>{{item.goodName}}</view>
+                  <view class=""><text class='text-color'>总量：</text>{{item.goodNum}}</view>
+              </view>
+          </navigator>
+          <view class="orders-footer">
+              <text>实付：￥{{item.finalPrice}}</text>
+              <button wx:if="{{item.status == 1}}" size="mini" data-orderid="{{item.id}}" class="orders-btn" bindtap="cancelOrders" hover-class="view-hover">取消</button>
+              <!-- <button wx:if="{{item.status == 1}}" size="mini" class="orders-btn" bindtap="cancelOrders({{item.id}})">付款</button> -->
+              <button wx:if="{{item.status == 1}}" size="mini" class="orders-btn" bindtap="payOrders" hover-class="view-hover">付款</button>
+              <view wx:else size="mini" class="orders-finish"><text class="orders-finish-text">订单已付款</text></view>
+          </view>
+         
+        </view>
+    </view>
+    <view class="text-bottom" hidden="{{hiddenBottom}}">向下滑动加载更多订单信息...</view>
+    <view class="text-bottom" hidden="{{hasMoreOrder}}">您已经没有更多订单了...</view>
+</scroll-view>

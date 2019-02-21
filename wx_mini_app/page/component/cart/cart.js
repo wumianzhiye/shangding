@@ -1,0 +1,238 @@
+// page/component/new-pages/cart/cart.js
+var Config = require('../../utils/config.js');
+
+Page({
+  data: {
+    carts: [],               // 购物车列表
+    hasList: false,          // 列表是否有数据
+    totalPrice: 0,           // 总价，初始为0
+    selectAllStatus: false,    // 全选状态，默认全选
+    obj: {
+      name: "hello"
+    },
+    model: '',
+    orders: ["oordd"],
+  },
+
+  onShow() {//网络请求从数据库中获取购物车信息,比onReady先执行，实时显示购物车状态   
+    var self = this;
+    wx.login({
+      success(res) {
+        console.log(res);
+        if (res.code) {
+          wx.request({
+            url: Config.rootUrl + '/cart/get_customer_id',
+            data: {
+              code: res.code,
+            },
+            success(resNew) {
+              self.setData({
+                carts: resNew.data,
+              });
+            }
+          });
+        }
+      }
+    })
+    this.setData({
+      hasList: true,
+    });
+  },
+
+  // test() {
+  //   let carts = this.data.carts;                  // 获取购物车列表
+  //   let total = 0;
+  //   let temp = [];
+  //   for (let i = 0; i < carts.length; i++) {         // 循环列表得到每个数据
+  //     if (carts[i].selected) {                     // 判断是否选中
+  //       temp.push(carts[i])
+  //     }
+  //   }
+  //   //console.log("temp:"+temp)
+  //   this.setData({
+  //     orders: temp
+  //   });
+  //   var order_info = JSON.stringify(this.data.orders)
+  //   //console.log(order_info)
+  //   //将选中的数据发往后台数据库，数据量大，用POST，迟早要做，目前不会
+  //   var self = this;
+  //   wx.request({
+  //     url: Config.rootUrl +'/good/order',
+  //     header: {
+  //       "Content-Type": "application/json;charset=utf-8",       
+  //     },  
+  //     method:"POST",
+  //     data: "{'json':'"+order_info+"'}",//不要用双引号，后台会错，暂时解决不了
+  //   });
+  //   //console.log("LOOKHERE:"+this.data.orders[1].goodName)//重要！！！！注意和上面直接order的区别（有this.setData在牵头）
+  // },
+
+  test() {
+    wx.login({
+      success(res) {
+        console.log(res);
+        if (res.code) {
+          /**
+          * 获取用户信息
+          */
+          wx.getUserInfo({
+            success: function (resNew) {
+              // 发起网络请求
+              wx.request({
+                url: Config.rootUrl+ '/user/get_user_info',
+                data: {
+                  code: res.code,
+                  thumb: resNew.userInfo.avatarUrl,
+                  nickName: resNew.userInfo.nickName
+                }
+              })
+            }
+          })
+          
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    })
+
+    let carts = this.data.carts;                  // 获取购物车列表
+    let total = 0;
+    let temp = [];
+    // 被选中的购物车id
+    var selectCartIds = '';
+    // 被选中的goodid和对应的num
+    var selectGoodIdNum = '';
+    for (let i = 0; i < carts.length; i++) {         // 循环列表得到每个数据
+      if (carts[i].selected) {                     // 判断是否选中
+        temp.push(carts[i]);
+        selectCartIds += carts[i].id + ",";
+        selectGoodIdNum += carts[i].goodId + "-" + carts[i].num + ";";
+      }
+    }
+
+    if (temp.length == 0 ){
+      wx.showToast({
+        title: '请选择商品',
+        duration: 500,
+        mask: true//防止触摸穿透
+      })
+      return;
+    };
+    
+    this.setData({
+      orders: temp
+    });
+
+    var packageSelectCartIds = selectCartIds.substr(0, selectCartIds.length -1);
+    var packageSelectGoodIdNum = selectGoodIdNum.substr(0, selectGoodIdNum.length - 1);
+    var self = this.data;
+
+    console.log("cart packageSelectCartIds=" + packageSelectCartIds + "packageSelectGoodIdNum=" + packageSelectGoodIdNum);
+    wx.navigateTo({
+      url: '../payment/payment?packageSelectCartIds=' + packageSelectCartIds + "&packageSelectGoodIdNum=" + packageSelectGoodIdNum + "&carts=" + JSON.stringify(this.data.orders),
+    });
+  },
+
+  /**
+   * 当前商品选中事件
+   */
+  selectList(e) {
+    const index = e.currentTarget.dataset.index;
+    let carts = this.data.carts;
+    const selected = carts[index].selected;
+    carts[index].selected = !selected;
+    this.setData({
+      carts: carts
+    });
+    this.getTotalPrice();
+  },
+
+  /**
+   * 删除购物车当前商品
+   */
+  deleteList(e) {
+    const index = e.currentTarget.dataset.index;
+    let carts = this.data.carts;
+    carts.splice(index, 1);
+    this.setData({
+      carts: carts
+    });
+    if (!carts.length) {
+      this.setData({
+        hasList: false
+      });
+    } else {
+      this.getTotalPrice();
+    }
+  },
+
+  /**
+   * 购物车全选事件
+   */
+  selectAll(e) {
+    let selectAllStatus = this.data.selectAllStatus;
+    selectAllStatus = !selectAllStatus;
+    let carts = this.data.carts;
+
+    for (let i = 0; i < carts.length; i++) {
+      carts[i].selected = selectAllStatus;
+    }
+    this.setData({
+      selectAllStatus: selectAllStatus,
+      carts: carts
+    });
+    this.getTotalPrice();
+  },
+
+  /**
+   * 绑定加数量事件
+   */
+  addCount(e) {
+    const index = e.currentTarget.dataset.index;
+    let carts = this.data.carts;
+    let num = carts[index].num;
+    num = num + 1;
+    carts[index].num = num;
+    this.setData({
+      carts: carts
+    });
+    this.getTotalPrice();
+  },
+
+  /**
+   * 绑定减数量事件
+   */
+  minusCount(e) {
+    const index = e.currentTarget.dataset.index;
+    const obj = e.currentTarget.dataset.obj;
+    let carts = this.data.carts;
+    let num = carts[index].num;
+    if (num <= 1) {
+      return false;
+    }
+    num = num - 1;
+    carts[index].num = num;
+    this.setData({
+      carts: carts
+    });
+    this.getTotalPrice();
+  },
+
+  /**
+   * 计算总价
+   */
+  getTotalPrice() {
+    let carts = this.data.carts;                  // 获取购物车列表
+    let total = 0;
+    for (let i = 0; i < carts.length; i++) {         // 循环列表得到每个数据
+      if (carts[i].selected) {                     // 判断选中才会计算价格
+        total += carts[i].num * carts[i].goodPrice;   // 所有价格加起来
+      }
+    }
+    this.setData({                                // 最后赋值到data中渲染到页面
+      carts: carts,
+      totalPrice: total.toFixed(2)
+    });
+  }
+
+})

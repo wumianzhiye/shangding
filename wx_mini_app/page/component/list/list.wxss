@@ -1,0 +1,83 @@
+@import '../../common/common.wxss';
+
+.banner image{
+    width: 100%;
+    height: 400rpx;
+}
+.list-box{
+    padding: 30rpx 20rpx;
+}
+.newest-list{
+    display: inline-block;
+    width: 48%;
+    /* height: 440rpx; */
+    box-sizing: border-box;
+    margin:0 20rpx 20rpx 0;
+    border-radius: 10px;
+    text-align: center;
+    background: #f5f6f5;
+}
+.newest-list:nth-child(2n){
+    margin-right: 0;
+}
+.newest-list image{
+    width: 100%;
+    /* height: 275rpx; */
+    margin: 20rpx 0 10rpx;
+}
+.newest-list .newest-text{
+    font-size: 32rpx;
+    line-height: 45rpx;
+}
+.newest-text-price{
+    font-size: 32rpx;
+    color: #ff7800
+}
+
+/* 搜索 */
+.search{
+  width: 80%;
+}
+.search_arr {
+  border: 1px solid #d0d0d0;
+  border-radius: 10rpx;
+  margin-left: 20rpx;
+}
+.search_arr input{
+  margin-left: 60rpx;
+  height: 60rpx;
+  border-radius: 5px;
+}
+.bc_text {
+  line-height: 68rpx;
+  height: 68rpx;
+  margin-top: 34rpx;
+}
+ 
+.sousuo {
+  margin-left: 15rpx;
+  width: 15%;
+  line-height: 150%;
+  text-align: center;
+  border: 1px solid #d0d0d0;
+  border-radius: 10rpx;
+}
+.page_row{
+  margin-top: 10rpx; 
+  margin-bottom:5rpx; 
+  display: flex;
+  flex-direction: row
+}
+.searchcion {
+  margin: 10rpx 10rpx 10rpx 10rpx;
+  position: absolute;
+  left:25rpx;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+.text_sorry{
+  margin-top:20rpx; 
+  text-align: center;
+}

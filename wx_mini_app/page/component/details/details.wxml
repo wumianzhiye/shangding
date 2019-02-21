@@ -1,0 +1,31 @@
+<view class="main">
+  <view class="goods-box">
+    <image src="{{goodMainUrl}}" class="goods-thumb" mode='widthFix'></image>
+    <view class="goods-operation" bindtap="click" hover-class="view-hover" hover-stay-time="1000">
+      <!-- <text class="goods-operation-num">数量  {{num}}</text>
+      <text class="goods-operation-add" bindtap="addCount">+</text> -->
+      <text class="goods-to-cart" >加入购物车</text>
+      <image src="/image/cart1.png" class="goods-cart-img" bindtap="addToCart"></image>
+    </view>
+    <image wx:if="{{show}}" src="/image/cart1.png" class="to-carts-icon"></image>
+    <view class="goods-title">{{goodName}}</view>
+    <view class="goods-price-color">￥ {{goodPrice}}</view>
+  </view>
+  <view class="goods-tab-box">
+    <view class="goods-tab-nav {{curIndex === 0 ?'on':''}}" bindtap="bindTap" data-index="0">商品详情</view>
+    <view class="goods-tab-nav {{curIndex === 1 ?'on':''}}" bindtap="bindTap" data-index="1">产品参数</view>
+    <view class="goods-tab-nav {{curIndex === 2 ?'on':''}}" bindtap="bindTap" data-index="2">售后保障</view>
+    <view class="goods-content">
+
+      <view wx:if="{{curIndex === 0}}">
+
+        <view wx:for="{{goodDetailUrls}}" wx:key="index">
+          <image src="{{item}}" mode='widthFix'></image>
+        </view>
+      </view>
+
+      <view wx:if="{{curIndex === 1}}">{{goods.parameter}}</view>
+      <view wx:if="{{curIndex === 2}}">{{goods.service}}</view>
+    </view>
+  </view>
+</view>

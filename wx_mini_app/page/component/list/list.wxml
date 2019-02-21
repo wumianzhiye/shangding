@@ -1,0 +1,68 @@
+<view class="main">
+  <!--  搜索框  -->
+    <view class='page_row'>
+    <view class="search">
+      <view class="df search_arr">
+        <icon class="searchcion" size='20' type='search'></icon>
+        <input class="text_data"  placeholder="请输入关键字搜索商品" value="{{searchValue}}" bindinput='searchInput'/>
+      </view>
+    </view>
+    <view class='sousuo' bindtap="suo">搜索</view>
+  </view>
+
+<view wx:if = "{{search_goods.length == 0}}" class="text_sorry">抱歉，没有您搜索的商品</view>
+  <view wx:else class="list-box">
+    <view class="newest-list" wx:for="{{search_goods}}" wx:key="{{index}}">
+      <navigator url="../details/details?good_id={{item.goodId}}&good_name={{item.goodName}}&good_main_url={{item.goodMainUrl}}&good_price={{item.goodPrice}}&good_detail_urls={{item.goodDetailUrls}}">
+        <image mode="widthFix" src="{{item.goodMainUrl}}"></image>
+        <view class="newest-text">
+          <text>{{item.goodName[0]}}</text>
+          <text>{{item.goodName[1]}}</text>
+          <text>{{item.goodName[2]}}</text>
+          <text>{{item.goodName[3]}}</text>
+          <text>{{item.goodName[4]}}</text>
+          <text>{{item.goodName[5]}}</text>
+          <text>{{item.goodName[6]}}</text>
+          <text>{{item.goodName[7]}}</text>
+          <text>{{item.goodName[8]}}</text>
+          <text>{{item.goodName[9]}}</text>
+          <text>{{item.goodName[10]}}</text>
+          <text>{{item.goodName[11]}}</text>
+          <text>{{item.goodName[12]}}</text>
+          <text>{{item.goodName[13]}}</text>
+          <text>{{item.goodName[14]}}</text>
+          <text>{{item.goodName[15]}}</text> ...
+        </view>
+        <view class="newest-text-price">
+          <text>￥ {{item.goodPrice}}</text>
+        </view>
+      </navigator>
+    </view>
+    <view class="newest-list" wx:for="{{search_goods}}" wx:key="{{index}}">
+      <navigator url="../details/details?good_id={{item.goodId}}&good_name={{item.goodName}}&good_main_url={{item.goodMainUrl}}&good_price={{item.goodPrice}}&good_detail_urls={{item.goodDetailUrls}}">
+        <image mode="widthFix" src="{{item.goodMainUrl}}"></image>
+        <view class="newest-text">
+          <text>{{item.goodName[0]}}</text>
+          <text>{{item.goodName[1]}}</text>
+          <text>{{item.goodName[2]}}</text>
+          <text>{{item.goodName[3]}}</text>
+          <text>{{item.goodName[4]}}</text>
+          <text>{{item.goodName[5]}}</text>
+          <text>{{item.goodName[6]}}</text>
+          <text>{{item.goodName[7]}}</text>
+          <text>{{item.goodName[8]}}</text>
+          <text>{{item.goodName[9]}}</text>
+          <text>{{item.goodName[10]}}</text>
+          <text>{{item.goodName[11]}}</text>
+          <text>{{item.goodName[12]}}</text>
+          <text>{{item.goodName[13]}}</text>
+          <text>{{item.goodName[14]}}</text>
+          <text>{{item.goodName[15]}}</text> ...
+        </view>
+        <view class="newest-text-price">
+          <text>￥ {{item.goodPrice}}</text>
+        </view>
+      </navigator>
+    </view>
+  </view>
+</view>

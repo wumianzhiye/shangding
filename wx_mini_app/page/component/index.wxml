@@ -1,0 +1,105 @@
+<view class="main">
+ <!--  搜索框  -->
+    <view class='page_row'>
+    <view class="search">
+      <view class="df search_arr">
+        <icon class="searchcion" size='20' type='search'></icon>
+        <input class="text_data"  placeholder="请输入关键字搜索商品" value="{{searchValue}}" bindinput="searchInput"/>
+      </view>
+    </view>
+    <view class='sousuo' bindtap="suo">搜索</view>
+  </view>
+
+  <swiper indicator-dots="true" autoplay="true" interval="{{interval}}" duration="{{duration}}" circular="true">
+    <block wx:for="{{title_goods}}" wx:key="{{index}}">
+      <navigator url="details/details?good_id={{item.id}}&good_name={{item.goodName}}&good_main_url={{item.goodMainUrl}}&good_price={{item.goodPrice}}&good_detail_urls={{item.goodDetailUrls}}">
+        <swiper-item>
+          <image src="{{item.goodMainUrl}}" class="slide-image" width="100%" />
+        </swiper-item>
+      </navigator>
+    </block>
+  </swiper>
+
+  <view class="selected">
+    <view class="select-title">
+      <text>精选</text>
+    </view>
+    <view class="select-top">
+      <view class="select-top-small">
+        <navigator url="details/details?good_id=112&good_name=商鼎喜尊&good_main_url=http://xinyang.yjz5.com/yMybatis/image/images/单透95---70.jpg&good_price=3211&good_detail_urls=http://xinyang.yjz5.com/yMybatis/image/images/95------100单透.jpg,http://xinyang.yjz5.com/yMybatis/image/images/单透95---70.jpg">
+          <image mode='widthFix' src="http://xinyang.yjz5.com/yMybatis/image/images/70-95单透.jpg"></image>
+        </navigator>
+      </view>
+      <view class="select-top-small">
+        <navigator url="details/details?good_id=112&good_name=商鼎喜尊&good_main_url=http://xinyang.yjz5.com/yMybatis/image/images/单透95---70.jpg&good_price=3211&good_detail_urls=http://xinyang.yjz5.com/yMybatis/image/images/95------100单透.jpg,http://xinyang.yjz5.com/yMybatis/image/images/单透95---70.jpg">
+          <image mode='widthFix' src="http://xinyang.yjz5.com/yMybatis/image/images/70--95单透.jpg"></image>
+        </navigator>
+      </view>
+    </view>
+    <view class="select-bottom">
+      <navigator url="details/details?good_id=112&good_name=商鼎喜尊&good_main_url=http://xinyang.yjz5.com/yMybatis/image/images/单透95---70.jpg&good_price=3211&good_detail_urls=http://xinyang.yjz5.com/yMybatis/image/images/95------100单透.jpg,http://xinyang.yjz5.com/yMybatis/image/images/单透95---70.jpg">
+        <image mode='widthFix' src="http://xinyang.yjz5.com/yMybatis/image/images/95------100单透.jpg"></image>
+      </navigator>
+    </view>
+  </view>
+  <view class="newest">
+    <view class="newest-title">
+      <text>新品</text>
+    </view>
+    <!--必须要两个分别奇偶纪录才会呈现左右效果  -->
+    <view class="newest-box">
+      <view wx:for="{{odd_goods}}" wx:key="{{index}}" class="newest-list">
+        <navigator url="details/details?good_id={{item.id}}&good_name={{item.goodName}}&good_main_url={{item.goodMainUrl}}&good_price={{item.goodPrice}}&good_detail_urls={{item.goodDetailUrls}}">
+          <image mode='widthFix' src="{{item.goodMainUrl}}"></image>
+          <view class="newest-text">
+            <text>{{item.goodName[0]}}</text>
+            <text>{{item.goodName[1]}}</text>
+            <text>{{item.goodName[2]}}</text>
+            <text>{{item.goodName[3]}}</text>
+            <text>{{item.goodName[4]}}</text>
+            <text>{{item.goodName[5]}}</text>
+            <text>{{item.goodName[6]}}</text>
+            <text>{{item.goodName[7]}}</text>
+            <text>{{item.goodName[8]}}</text>
+            <text>{{item.goodName[9]}}</text>
+            <text>{{item.goodName[10]}}</text>
+            <text>{{item.goodName[11]}}</text>
+            <text>{{item.goodName[12]}}</text>
+            <text>{{item.goodName[13]}}</text>
+            <text>{{item.goodName[14]}}</text>
+            <text>{{item.goodName[15]}}</text> ...
+          </view>
+          <view class="newest-text-price">
+            <text>￥ {{item.goodPrice}}</text>
+          </view>
+        </navigator>
+      </view>
+      <view wx:for="{{even_goods}}" wx:key="{{index}}" class="newest-list">
+        <navigator url="details/details?good_id={{item.id}}&good_name={{item.goodName}}&good_main_url={{item.goodMainUrl}}&good_price={{item.goodPrice}}&good_detail_urls={{item.goodDetailUrls}}">
+          <image mode='widthFix' src="{{item.goodMainUrl}}" ></image>
+          <view class="newest-text">
+            <text>{{item.goodName[0]}}</text>
+            <text>{{item.goodName[1]}}</text>
+            <text>{{item.goodName[2]}}</text>
+            <text>{{item.goodName[3]}}</text>
+            <text>{{item.goodName[4]}}</text>
+            <text>{{item.goodName[5]}}</text>
+            <text>{{item.goodName[6]}}</text>
+            <text>{{item.goodName[7]}}</text>
+            <text>{{item.goodName[8]}}</text>
+            <text>{{item.goodName[9]}}</text>
+            <text>{{item.goodName[10]}}</text>
+            <text>{{item.goodName[11]}}</text>
+            <text>{{item.goodName[12]}}</text>
+            <text>{{item.goodName[13]}}</text>
+            <text>{{item.goodName[14]}}</text>
+            <text>{{item.goodName[15]}}</text> ...
+          </view>
+          <view class="newest-text-price">
+            <text>￥ {{item.goodPrice}}</text>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+</view>
