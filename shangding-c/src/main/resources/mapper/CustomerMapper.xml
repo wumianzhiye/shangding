@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangding.wechat.dao.CustomerMapper">
+
+  <resultMap id="BaseResultMap" type="com.shangding.wechat.model.Customer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="thumb" jdbcType="VARCHAR" property="thumb" />
+    <result column="nick_name" jdbcType="INTEGER" property="nickName" />
+    <result column="first_get_info" jdbcType="INTEGER" property="firstGetInfo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="getById" parameterType="int"
+          resultMap="BaseResultMap">
+        select * from customer where id=#{id}
+    </select>
+
+  <select id="getByOpenId"  resultMap="BaseResultMap">
+    	select * from customer where open_id = #{openId}
+  </select>
+
+  <update id="update" >
+    update customer
+    <set>
+      <if test="openId != null">`open_id` = #{openId},</if>
+      <if test="thumb != null">`thumb` = #{thumb},</if>
+      <if test="nickName != null">`nick_name` = #{nickName},</if>
+      <if test="firstGetInfo != null">`first_get_info` = #{firstGetInfo},</if>
+      <if test="updateTime != null">`update_time` = #{updateTime},</if>
+    </set>
+    where  `id` = #{id}
+  </update>
+
+  <insert id="insertCustomer" useGeneratedKeys="true" keyProperty="id">
+      insert into customer(open_id, thumb, nickName, create_time, update_time)
+      values(#{openId},#{thumb},#{nickName},now(),now())
+  </insert>
+
+  <insert id="insertCustomerOnlyOpenId" useGeneratedKeys="true" keyProperty="id">
+      insert into customer(open_id, create_time, update_time)
+      values(#{openId},now(),now())
+  </insert>
+</mapper>

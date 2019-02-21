@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangding.wechat.dao.OrderItemMapper">
+  <resultMap id="BaseResultMap" type="com.shangding.wechat.model.OrderItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="good_id" jdbcType="VARCHAR" property="goodId" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
+  </resultMap>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into `order_item`(good_id,quantity,order_id,price,total_price)
+		values (#{goodId},#{quantity},#{orderId},#{price},#{totalPrice})
+	</insert>
+
+    <select id="getByOrderId" resultMap="BaseResultMap">
+        select  *
+        from `order_item`
+        where order_id = #{orderId}
+    </select>
+
+</mapper>

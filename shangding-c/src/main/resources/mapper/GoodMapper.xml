@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangding.wechat.dao.GoodMapper">
+
+  <resultMap id="BaseResultMap" type="com.shangding.wechat.model.Good">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="good_name" jdbcType="VARCHAR" property="goodName" />
+    <result column="good_price" jdbcType="INTEGER" property="goodPrice" />
+    <result column="good_main_url" jdbcType="VARCHAR" property="goodMainUrl" />
+    <result column="good_detail_urls" jdbcType="VARCHAR" property="goodDetailUrls" />
+    <result column="good_type" jdbcType="VARCHAR" property="goodType" />
+  </resultMap>
+
+  <select id="getGood" parameterType="int" resultMap="BaseResultMap">
+		select * from good where id=#{id}
+	</select>
+  <select id="getAll"  resultMap="BaseResultMap">
+		select * from good where id not in (111,112,113)
+	</select>
+  <select id="getAllOdd"  resultMap="BaseResultMap">
+		select * from good where id%2!=0 and id not in (111,112,113)
+	</select>
+  <select id="getAllEven"  resultMap="BaseResultMap">
+		select * from good where id%2!=1 and id not in (111,112,113)
+	</select>
+
+  <select id="getByIds"  resultMap="BaseResultMap">
+		select * from good where id in (${goodIds})
+	</select>
+
+  <select id="getCartInfo"  resultMap="BaseResultMap">
+		select id,good_name,good_price,good_main_url from good where id=#{id}
+	</select>
+  <select id="getByType" resultMap="BaseResultMap">
+		select * from good where good_type=#{goodType}
+	</select>
+  <select id="getTitle"  resultMap="BaseResultMap">
+		select * from good  where id in (111,112,113)
+	</select>
+
+
+</mapper>

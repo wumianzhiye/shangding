@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangding.wechat.dao.CustomerAddressMapper">
+  <resultMap id="BaseResultMap" type="com.shangding.wechat.model.CustomerAddress">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="name" jdbcType="VARCHAR" property="name" />
+    <result column="destination" jdbcType="VARCHAR" property="destination" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+  </resultMap>
+
+   <sql id="orderColumn">
+     id, destination, phone, customer_id
+   </sql>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into `customer_address`(`name`, destination, phone, customer_id, create_time)
+		values (#{name}, #{destination}, #{phone}, #{customerId}, now())
+	</insert>
+
+</mapper>

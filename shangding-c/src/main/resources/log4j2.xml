@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<configuration>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p -&#45;&#45; [%25.25thread] %-40.40logger{39} [%5line] %X{token}: %m%n%ex"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${app.base:-${java.io.tmpdir}}/logs/wechat.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>-->
+<!-- 该xml配置中,xml元素大小写不敏感 -->
+<!-- status="off",log4j2把自身事件记录到控制台的配置，off表示不记录，其余的记录有trace，debug，info，warn，error，fatal -->
+<!-- monitorInterval表示检测更改配置的时间,单位是秒,最小间隔为5秒,0或负数表示不检测 -->
+<configuration name="test-cfg" status="off" monitorInterval="0">
+
+    <!-- 常量引用 -->
+    <properties>
+        <!--<property name="LOG_HOME">/opt/logs/api-logs/</property>-->
+        <property name="LOG_HOME">./logs</property>
+        <property name="FORMAT">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</property>
+        <property name="DATE">%d{yyyy-MM-dd}</property>
+    </properties>
+
+    <!-- appender用于接收各种日志 -->
+    <appenders>
+        <!-- 常见的输出到console,常用于开发环境中,默认是system_err,还有一个system_out -->
+        <console name="console" target="system_out">
+            <!-- appender级别的日志过滤 -->
+            <!-- <thresholdFilter level="info" onMatch="accept" onMismatch="deny"/> -->
+            <patternLayout pattern="${FORMAT}"/>
+        </console>
+        <!-- 常用于开发环境,把日志记录到文件中,默认追加 -->
+        <file name="db_log" fileName="${LOG_HOME}/shangding-db.${DATE}.log" append="true">
+
+            <patternLayout pattern="${FORMAT}"/>
+        </file>
+        <file name="service_log" fileName="${LOG_HOME}/shangding-info.${DATE}.log" append="true">
+            <patternLayout pattern="${FORMAT}"/>
+        </file>
+    </appenders>
+
+
+    <!-- 接收appender -->
+    <loggers>
+        <logger name="org.apache.http" level="warn"/>
+        <!-- Spring -->
+        <logger name="org.springframework" level="WARN"/>
+        <!-- mybatis loggers -->
+        <logger name="com.ibatis" level="DEBUG"/>
+        <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG"/>
+        <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG"/>
+        <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG"/>
+        <!-- sql loggers -->
+        <logger name="java.sql.Connection" level="DEBUG" additivity="true"/>
+        <logger name="java.sql.Statement" level="DEBUG" additivity="true"/>
+        <logger name="java.sql.PreparedStatement" level="=debug,stdout" additivity="true"/>
+        <logger name="java.sql.ResultSet" level="DEBUG" additivity="true"/>
+        <logger name="org.apache" level="WARN"/>
+
+        <!-- 对包进行更详细的配置 -->
+        <!-- additivity表示是否追加,防止重复,因为root已经接收过一次了 -->
+        <logger name="com.shangding.wechat.dao" level="DEBUG" additivity="true">
+            <appender-ref ref="db_log"/>
+        </logger>
+        <logger name="com.shangding.wechat.controller" level="DEBUG" additivity="false">
+            <appender-ref ref="service_log"/>
+        </logger>
+        <logger name="com.shangding.wechat.service" level="DEBUG" additivity="false">
+            <appender-ref ref="service_log"/>
+        </logger>
+        <!-- root logger,一般用于放置所有的appender -->
+        <root level="DEBUG">
+            <appender-ref ref="db_log"/>
+            <appender-ref ref="console"/>
+        </root>
+    </loggers>
+
+</configuration>

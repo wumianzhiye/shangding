@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangding.wechat.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.shangding.wechat.model.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="good_name" jdbcType="VARCHAR" property="goodName" />
+    <result column="final_price" jdbcType="DOUBLE" property="finalPrice" />
+    <result column="good_main_url" jdbcType="VARCHAR" property="goodMainUrl" />
+    <result column="good_num" jdbcType="INTEGER" property="goodNum" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="buyer_name" jdbcType="VARCHAR" property="buyerName" />
+  </resultMap>
+
+    <sql id="orderColumn">
+     id, good_name, final_price, good_main_url, good_num, customer_id, status, address, phone, buyer_name
+  </sql>
+
+
+  <select id="getAll" resultMap="BaseResultMap">
+	  select <include refid="orderColumn" />
+      from `order`
+      order by id desc
+  </select>
+
+  <select id="getByCustomerId" resultMap="BaseResultMap">
+    select  <include refid="orderColumn" />
+    from `order` where customer_id = #{customerId}
+    and 101 > status
+    <if test="maxId != null">
+      and #{maxId} > id
+    </if>
+    order by id desc
+    limit 10
+  </select>
+
+  <select id="getById" resultMap="BaseResultMap">
+    select  <include refid="orderColumn" />
+    from `order` where id = #{id}
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into `order`(good_name,final_price,good_main_url,good_num,customer_id,status,address,phone,buyer_name,create_time,update_time)
+		values (#{goodName},#{finalPrice},#{goodMainUrl},#{goodNum},#{customerId},#{status},#{address},#{phone},#{buyerName},now(),now())
+	</insert>
+
+  <update id="updateStatusById" >
+    update `order`
+    set `status`= #{status},update_time=now()
+    where id = #{id}
+  </update>
+
+  <update id="updateById" >
+    update `order`
+    <set>
+      <if test="goodName != null">
+        good_name = #{goodName},
+      </if>
+      <if test="finalPrice != null">
+        final_price = #{finalPrice},
+      </if>
+      <if test="goodMainUrl != null">
+        good_main_url = #{goodMainUrl},
+      </if>
+      <if test="goodNum != null">
+        good_num = #{goodNum},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId},
+      </if>
+      <if test="num != null">
+        num = #{num},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId},
+      </if>
+      <if test="status != null">
+        `status` = #{status},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where  `id` = #{id}
+  </update>
+
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangding.wechat.dao.CartMapper">
+  <resultMap id="BaseResultMap" type="com.shangding.wechat.model.Cart">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="good_id" jdbcType="INTEGER" property="goodId" />
+    <result column="good_name" jdbcType="VARCHAR" property="goodName" />
+    <result column="good_price" jdbcType="DOUBLE" property="goodPrice" />
+    <result column="good_main_url" jdbcType="VARCHAR" property="goodMainUrl" />
+    <result column="good_detail_urls" jdbcType="VARCHAR" property="goodDetailUrls" />
+    <result column="active" jdbcType="INTEGER" property="active" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+  </resultMap>
+
+   <sql id="cartColumn">
+     id, good_id, good_name, good_price, good_main_url, good_detail_urls, active, num, customer_id
+  </sql>
+
+  <select id="getAll" resultMap="BaseResultMap">
+      select
+      <include refid="cartColumn" />from cart and active = 0
+  </select>
+
+  <select id="getByCustomerId" resultMap="BaseResultMap">
+      select
+      <include refid="cartColumn" />
+      from cart where customer_id = #{customerId} and active = 0
+  </select>
+
+  <select id="getByCustomerIdAndIds" resultMap="BaseResultMap">
+      select
+      <include refid="cartColumn" />
+      from cart where customer_id = #{customerId} and id in (${ids}) and active = 0
+  </select>
+
+    <update id="updateById">
+        update `cart`
+        <set>
+            <if test="goodId != null">
+                good_id = #{goodId},
+            </if>
+            <if test="goodName != null">
+                good_name = #{goodName},
+            </if>
+            <if test="goodPrice != null">
+                good_price = #{goodPrice},
+            </if>
+            <if test="goodMainUrl != null">
+                good_main_url = #{goodMainUrl},
+            </if>
+            <if test="goodDetailUrls != null">
+                good_detail_urls = #{goodDetailUrls},
+            </if>
+            <if test="active != null">
+                active = #{active},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="customerId != null">
+                customer_id = #{customerId},
+            </if>
+        </set>
+        where `id` = #{id}
+    </update>
+
+    <select id="getByCustomerIdAndGoodId" resultMap="BaseResultMap">
+		select
+        <include refid="cartColumn" />
+		from cart
+		where customer_id = #{customerId}
+		and good_id = #{goodId}
+        and active = 0
+        limit 1
+    </select>
+
+  <insert id="insert">
+		insert into cart(good_id, good_name, good_price, good_main_url, good_detail_urls, customer_id)
+		values (#{goodId}, #{goodName}, #{goodPrice}, #{goodMainUrl}, #{goodDetailUrls}, #{customerId})
+	</insert>
+
+</mapper>
